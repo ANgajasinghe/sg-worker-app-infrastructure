@@ -1,3 +1,3 @@
 project = "sgcustomer"
-environment = "dev"
+environment = "stage"
 location = "East US"

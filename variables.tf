@@ -7,11 +7,12 @@
 variable "project" {
   type = string
   description = "Project name"
-  default = "West US 2"
+  default = "sgcustomer"
 }
 
 variable "environment" {
   type = string
+  default = "stage"
   description = "Environment (dev / stage / prod)"
 }
 
@@ -29,12 +30,12 @@ variable "mysql-admin-password" {
 variable "mysql-version" {
   type = string
   description = "MySQL Server version to deploy"
-  default = "8.0"
+  default = "5.7"
 }
 variable "mysql-sku-name" {
   type = string
   description = "MySQL SKU Name"
-  default = "B_Gen5_1"
+  default = "B_Gen5_2"
 }
 variable "mysql-storage" {
   type = string
