@@ -77,6 +77,30 @@ resource "azurerm_cosmosdb_account" "db" {
   }
 }
 
+resource "azurerm_cosmosdb_mongo_database" "mongo_db" {
+  name                = "${var.project}-${var.environment}-cosmos-mongo-db"
+  resource_group_name = azurerm_cosmosdb_account.db.resource_group_name
+  account_name        = azurerm_cosmosdb_account.db.name
+}
+
+
+resource "azurerm_cosmosdb_mongo_collection" "mongo_collection" {
+  name                = "${var.project}-${var.environment}-cosmos-mongo-db"
+  resource_group_name = azurerm_cosmosdb_account.db.resource_group_name
+  account_name        = azurerm_cosmosdb_account.db.name
+  database_name       = azurerm_cosmosdb_mongo_database.mongo_db.name
+
+  default_ttl_seconds = "777"
+  shard_key           = "uniqueKey"
+  throughput          = 400
+
+  index {
+    keys   = ["_id"]
+    unique = true
+  }
+}
+
+
 resource "azurerm_mysql_server" "mysql_server" {
   name                = "sg-mysqlserver"
   location            = azurerm_resource_group.resource_group.location
@@ -151,7 +175,7 @@ resource "azurerm_function_app" "function_app" {
   }
   storage_account_name       = azurerm_storage_account.storage_account.name
   storage_account_access_key = azurerm_storage_account.storage_account.primary_access_key
-  version                    = "~3"
+  version                    = "~4"
 
   depends_on = [azurerm_cosmosdb_account.db, azurerm_mysql_server.mysql_server, azurerm_application_insights.application_insights, azurerm_app_service_plan.app_service_plan]
 
